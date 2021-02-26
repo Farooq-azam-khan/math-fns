@@ -25,6 +25,14 @@ main = hspec $
          (abs (lin_reg_tst - 19.470) < 1e-3) `shouldBe` True 
       it "calculates a1" $ do 
         ((abs (test_a0 - actual_a0)) < 1e-3) `shouldBe` True
+      
+      it "test the tuple for a1, a0" $ do 
+        (test_tuple `shouldBe` (True, True))
+
+test_tuple = let 
+             (a1, a0) = get_coeff [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
+             in 
+                (abs (a1 - 19.470) < 1e-3, abs (a0 - actual_a0) < 1e-3)
 
 lin_reg_tst =  get_a1 [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
 
