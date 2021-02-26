@@ -4,6 +4,14 @@ import Test.QuickCheck
 import Choose
 import Numerical 
 import LinearRegression
+import TrapezoidalRule
+--newtype Tolerance = Tolerance Float 
+type Tolerance = Float 
+
+low_tolerance = 1e-3 
+medium_tolerance = 1e-6
+high_tolerance = 1e-9
+extreme_tolerance = 1e-12
 
 main :: IO ()
 main = hspec $ 
@@ -28,12 +36,18 @@ main = hspec $
       
       it "test the tuple for a1, a0" $ do 
         (test_tuple `shouldBe` (True, True))
+    describe "should test the trap rule" $ do 
+      it "checks if trap rule works" $ do 
+        (abs ((trap_rule a_func 0 0.8) - 0.1728) < low_tolerance) `shouldBe` True 
+      it "tests the composite rule" $ do 
+        (abs ((composite_trap a_func 0 0.8 2)) - 1.0688 < medium_tolerance) `shouldBe` True
+
 
 test_tuple = let 
              (a1, a0) = get_coeff [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
              in 
-                (abs (a1 - 19.470) < 1e-3, abs (a0 - actual_a0) < 1e-3)
-
+                (abs (a1 - 19.470) < low_tolerance, abs (a0 - actual_a0) < low_tolerance)
+a_func x = 0.2 + 25 * x - 200* x^2+ 675 * x^3 - 900 * x^4 + 400 * x^5 
 lin_reg_tst =  get_a1 [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
 
 actual_a0 = (-234.2857)
