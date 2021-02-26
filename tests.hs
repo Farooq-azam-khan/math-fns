@@ -5,6 +5,7 @@ import Choose
 import Numerical 
 import LinearRegression
 import TrapezoidalRule
+import SimpsonsRule
 --newtype Tolerance = Tolerance Float 
 type Tolerance = Float 
 
@@ -13,6 +14,7 @@ medium_tolerance = 1e-6
 high_tolerance = 1e-9
 extreme_tolerance = 1e-12
 
+shouldBeTrue = shouldBe True 
 main :: IO ()
 main = hspec $ 
   describe "all tests" $ do 
@@ -32,15 +34,18 @@ main = hspec $
       it "calculates the right a1 value" $ do 
          (abs (lin_reg_tst - 19.470) < 1e-3) `shouldBe` True 
       it "calculates a1" $ do 
-        ((abs (test_a0 - actual_a0)) < 1e-3) `shouldBe` True
+        shouldBeTrue ((abs (test_a0 - actual_a0)) < 1e-3)
       
       it "test the tuple for a1, a0" $ do 
         (test_tuple `shouldBe` (True, True))
     describe "should test the trap rule" $ do 
       it "checks if trap rule works" $ do 
-        (abs ((trap_rule a_func 0 0.8) - 0.1728) < low_tolerance) `shouldBe` True 
+        shouldBeTrue (abs ((trap_rule a_func 0 0.8) - 0.1728) < low_tolerance)
       it "tests the composite rule" $ do 
-        (abs ((composite_trap a_func 0 0.8 2)) - 1.0688 < medium_tolerance) `shouldBe` True
+        shouldBeTrue (abs ((composite_trap a_func 0 0.8 2) - 1.0688) < low_tolerance)
+    describe "should test simpsons rule" $ do 
+      it "tests the 1/3 rule" $ do 
+        shouldBeTrue (abs ((simpson_one_third a_func 0 0.8) - 1.367467) < low_tolerance)
 
 
 test_tuple = let 
