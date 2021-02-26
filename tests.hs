@@ -46,7 +46,8 @@ main = hspec $
     describe "should test simpsons rule" $ do 
       it "tests the 1/3 rule" $ do 
         shouldBeTrue (abs ((simpson_one_third a_func 0 0.8) - 1.367467) < low_tolerance)
-
+      it "tests the 1/3 composite rule" $ do 
+        shouldBeTrue (abs ((simpson_one_third_comp a_func 0 0.8 4) - 1.623467 ) < low_tolerance)
 
 test_tuple = let 
              (a1, a0) = get_coeff [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
