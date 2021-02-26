@@ -3,6 +3,7 @@ import Test.QuickCheck
 
 import Choose
 import Numerical 
+import LinearRegression
 
 main :: IO ()
 main = hspec $ 
@@ -19,4 +20,13 @@ main = hspec $
 
     it "should get the right stoping criterion" $ do 
       (stopping_criterion 0) `shouldBe` (0.5 * 10*10 :: Float)
+    describe "Linear regression" $ do 
+      it "calculates the right a1 value" $ do 
+         (abs (lin_reg_tst - 19.470) < 1e-3) `shouldBe` True 
+      it "calculates a1" $ do 
+        ((abs (test_a0 - actual_a0)) < 1e-3) `shouldBe` True
 
+lin_reg_tst =  get_a1 [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
+
+actual_a0 = (-234.2857)
+test_a0 =  get_a0 [(10, 25), (20, 70), (30, 380), (40, 550), (50, 610), (60, 1220), (70, 830), (80, 1450)]
